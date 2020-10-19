@@ -136,19 +136,23 @@ public ResponseEntity<String> validateLogin(Users user) {
 	@PostMapping("/employeesanniv")
 	public  Map<String, Object> getAnniversary( @RequestBody Employee employee)
 			throws ResourceNotFoundException, ParseException {
+	
 		int dte=0;
-		String currdate=employee.getFirstName();
+		String currdate=employee.getJoindate().toString();
 	//Date curr=new Date(currdate);
-		LocalDate localDate 
-        = LocalDate.of(2020, 
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MMM-yyyy");
+		LocalDate date = LocalDate.parse("currdate", formatter);
+
+		LocalDate localDate =date;
+     /*  = LocalDate.of(2020, 
                        Month.OCTOBER, 18); 
-		LocalDate Startdte 
+	*/	
+				LocalDate Startdte 
         = LocalDate.of(1947, 
                        Month.AUGUST, 15); 
 		LocalDate endte 
         = LocalDate.of(1947, 
                        Month.AUGUST, 15); 
-
     // Find the day from the local date 
     DayOfWeek dayOfWeek 
         = DayOfWeek.from(localDate); 
@@ -166,18 +170,14 @@ public ResponseEntity<String> validateLogin(Users user) {
                        + " - " + val);
     List<String> myList = new ArrayList<String> ();
     LocalDate zonedlt 
-    = LocalDate.parse("2020-10-18"); 
-
-   // LocalDate Startdte,endte; 
-  //  = zonedlt.minus(Period.ofDays(30)); 
+    = date; 
 
 
 if(val==1)
 {
-		Date Startdate=new Date(currdate) ;
-		// endte  =((LocalDate) curr).plusDays(6);
-				//zonedlt.minus(Period.ofDays(30)); 
-
+	Startdte=(zonedlt) ;
+		 endte  =(zonedlt).plusDays(6);
+			
 
 }
 if(val==2)
@@ -232,6 +232,7 @@ System.out.println(temp);
 	  	Map <String,Object> dataHashMap=new HashMap<String,Object>();
 	  	dataHashMap.put("annivlist", resultLists);
 		return dataHashMap;
+	
 	}
 	private static Timestamp localToTimeStamp(LocalDate date){
 	      return Timestamp.from(date.atStartOfDay().toInstant(ZoneOffset.UTC));
