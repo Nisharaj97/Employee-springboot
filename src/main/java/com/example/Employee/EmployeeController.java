@@ -134,19 +134,28 @@ public ResponseEntity<String> validateLogin(Users user) {
 	
 
 	@PostMapping("/employeesanniv")
-	public  Map<String, Object> getAnniversary( @RequestBody Employee employee)
+	public  Map<String, Object> getAnniversary( @RequestBody Map<String,Object> requestData)
 			throws ResourceNotFoundException, ParseException {
 	
-		int dte=0;
-		String currdate=employee.getJoindate().toString();
+		String currdate=requestData.get("curdte").toString();
+		//String currdate=	"{year: 2020, month: 10, day: 20}";
+		currdate=currdate.replaceAll(":", "");
+		currdate=currdate.replace(",", "-");
+		currdate=currdate.replaceAll("[a-zA-Z]", "");
+		currdate=currdate.replaceAll("\\s", "");
+			int dte=0;
+	//	String currdate=employee.getJoindate().toString();
 	//Date curr=new Date(currdate);
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MMM-yyyy");
-		LocalDate date = LocalDate.parse("currdate", formatter);
+			String pattern = "yyyy-MM-dd";
+			SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
 
-		LocalDate localDate =date;
-     /*  = LocalDate.of(2020, 
-                       Month.OCTOBER, 18); 
-	*/	
+			//String dates = simpleDateFormat.parse(currdate);
+			String oldstring = currdate+" 00:00:00.0";
+			Date datee = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S").parse(oldstring);
+			LocalDate zonedlt=	datee.toInstant()
+				      .atZone(ZoneId.systemDefault())
+				      .toLocalDate();
+		
 				LocalDate Startdte 
         = LocalDate.of(1947, 
                        Month.AUGUST, 15); 
@@ -155,12 +164,12 @@ public ResponseEntity<String> validateLogin(Users user) {
                        Month.AUGUST, 15); 
     // Find the day from the local date 
     DayOfWeek dayOfWeek 
-        = DayOfWeek.from(localDate); 
+        = DayOfWeek.from(zonedlt); 
 
     // Printing the day of the week 
     // and its Int value 
     System.out.println("Day of the Week on"
-                       + " 15th August 1947 - "
+                       
                        + dayOfWeek.name()); 
 
     int val = dayOfWeek.getValue(); 
@@ -169,8 +178,7 @@ public ResponseEntity<String> validateLogin(Users user) {
                        + dayOfWeek.name() 
                        + " - " + val);
     List<String> myList = new ArrayList<String> ();
-    LocalDate zonedlt 
-    = date; 
+   
 
 
 if(val==1)
